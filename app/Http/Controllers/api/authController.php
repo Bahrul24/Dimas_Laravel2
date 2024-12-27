@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Apiresource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class authController extends Controller
@@ -30,7 +31,8 @@ class authController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+
+        $request->user()->tokens()->delete();
         return new Apiresource(
             null, "Log Out Berhasil", true
         );

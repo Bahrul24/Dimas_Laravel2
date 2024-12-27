@@ -19,12 +19,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('ApiTask', ApiController::class);
-
-// Logout
-
-Route::post('logoutapi', [authController::class,"logoutapi"]);
 // Login
 Route::post('login', [authController::class, "login"]);
 
-Route::apiResource('ApiTask', ApiController::class);
+Route::middleware('auth:sanctum')->group( function (): void {
+    Route::apiResource('ApiTask', ApiController::class);
+    Route::get('logout', [authController::class,"logout"]);
+});

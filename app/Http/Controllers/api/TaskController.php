@@ -7,14 +7,22 @@ use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Http\Resources\Apiresource;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;    
 
 class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+    // public function __construct() {
+    //     $this->middleware(["role:superadmin"]);
+    // }
+
     public function index()
     {
+        $this->authorize("Lihat task");
         $Task = Task::latest()->paginate(10);
         return response()->json($Task);
     }
@@ -24,7 +32,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-       // 
+      //
     }
 
     /**
@@ -82,10 +90,20 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $this->authorize('update', $request);
+        $Task = Task::find($id);
+
+        $Task->update($request->all());
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Task berhasil diperbarui',
+            'data' => $request
+        ]);
     }
+
 
     /**
      * Remove the specified resource from storage.
