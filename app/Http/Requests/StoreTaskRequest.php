@@ -28,4 +28,13 @@ class StoreTaskRequest extends FormRequest
             'category_id' => 'required|exists:categories,id',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'title.required' => 'Judul task harus diisi.',
+            'due_date.required' => 'Tanggal jatuh tempo harus diisi.',
+            'category_id.exists' => 'Kategori yang dipilih tidak valid.',
+        ];
+    }
 }
